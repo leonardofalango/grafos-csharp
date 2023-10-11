@@ -1,12 +1,10 @@
 using System.Collections.Generic;
+using System.Windows.Forms;
 using Stately;
 
-public class Solver
+public abstract class Solver
 {
     public Maze Maze { get; set; }
     
-    public void Solve()
-    {
-        
-    }
+    public abstract void Solve();
 }
