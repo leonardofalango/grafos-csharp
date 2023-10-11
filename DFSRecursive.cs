@@ -4,64 +4,49 @@ public class DFSRecursive : Solver
 {
     public override void Solve()
     {
-        Stack<Space> toVisit = new Stack<Space>();
+        solve(Maze.Root);
+    }
 
-        toVisit.Push(Maze.Root);
-        Space actualNode;
+    private bool solve(Space space)
+    {
+        space.Visited = true;
         
-        bool flag;
-        Stack<Space> spacesToAdd;
-
-        while (toVisit.Count > 0)
+        if (space.Exit)
         {
-            spacesToAdd = new Stack<Space>();
-            flag = false;
-
-            actualNode = toVisit.Peek();
-            actualNode.Visited = true;
-
-            if (actualNode.Exit)
-                break;
-
-            if (actualNode.Left != null && !actualNode.Left.Visited)
-            {
-                flag = true;
-                spacesToAdd.Push(actualNode.Left);
-            }
-
-            if (actualNode.Top != null && !actualNode.Top.Visited)
-            {
-                flag = true;
-                spacesToAdd.Push(actualNode.Top);
-            }
-
-            if (actualNode.Bottom != null && !actualNode.Bottom.Visited)
-            {
-                flag = true;
-                spacesToAdd.Push(actualNode.Bottom);
-            }
-
-            if (actualNode.Right != null && !actualNode.Right.Visited)
-            {
-                flag = true;
-                spacesToAdd.Push(actualNode.Right);
-            }
-
-            if (flag)
-            {
-                toVisit.Pop();
-                foreach (var item in spacesToAdd)
-                {
-                    toVisit.Push(item);
-                }
-            }
-
+            space.IsSolution = true;
+            return true;
         }
 
-        foreach (var item in toVisit)
-            item.IsSolution = true;
 
+        if (space.Right != null && !space.Right.Visited)
+        {
+            space.IsSolution = solve(space.Right);
+            if (space.IsSolution)
+                return true;
+        }
+        
+        if (space.Bottom != null && !space.Bottom.Visited)
+        {
+            space.IsSolution = solve(space.Bottom);
+            if (space.IsSolution)
+                return true;
+        } 
+        
+        if (space.Top != null && !space.Top.Visited)
+        {
+            space.IsSolution = solve(space.Top);
+            if (space.IsSolution)
+                return true;
+        }
+
+        if (space.Left != null && !space.Left.Visited)
+        {
+            space.IsSolution = solve(space.Left);
+            if (space.IsSolution)
+                return true;
+        } 
+        
+        return false;
+        
     }
-}
-    
 }
