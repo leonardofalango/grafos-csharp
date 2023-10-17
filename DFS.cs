@@ -1,38 +1,52 @@
 using System.Collections.Generic;
-using System.Linq;
 
 public class DFS : Solver
 {
-    
     public override void Solve()
     {
+        solve(Maze.Root);
+    }
 
-        Stack<Space> toVisit = new Stack<Space>();
-
-        toVisit.Push(Maze.Root);
-        Space actualNode;
-
-        while (toVisit.Count > 0)
+    private bool solve(Space space)
+    {
+        space.Visited = true;
+        
+        if (space.Exit)
         {
-            actualNode = toVisit.Pop();
-            actualNode.Visited = true;
-
-            if (actualNode.Exit)
-                return;
-
-            if (actualNode.Left != null && !actualNode.Left.Visited)
-                toVisit.Push(actualNode.Left);
-
-            if (actualNode.Top != null && !actualNode.Top.Visited)
-                toVisit.Push(actualNode.Top);
-
-            if (actualNode.Bottom != null && !actualNode.Bottom.Visited)
-                toVisit.Push(actualNode.Bottom);
-
-            if (actualNode.Right != null && !actualNode.Right.Visited)
-                toVisit.Push(actualNode.Right);
-
+            space.IsSolution = true;
+            return true;
         }
 
+
+        if (space.Right != null && !space.Right.Visited)
+        {
+            space.IsSolution = solve(space.Right);
+            if (space.IsSolution)
+                return true;
+        }
+        
+        if (space.Bottom != null && !space.Bottom.Visited)
+        {
+            space.IsSolution = solve(space.Bottom);
+            if (space.IsSolution)
+                return true;
+        } 
+        
+        if (space.Top != null && !space.Top.Visited)
+        {
+            space.IsSolution = solve(space.Top);
+            if (space.IsSolution)
+                return true;
+        }
+
+        if (space.Left != null && !space.Left.Visited)
+        {
+            space.IsSolution = solve(space.Left);
+            if (space.IsSolution)
+                return true;
+        } 
+        
+        return false;
+        
     }
 }

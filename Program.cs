@@ -147,7 +147,7 @@ public class MazeView : View
     bool update = false;
     bool solve = false;
     public Maze Maze { get; set; }
-    Solver Solver = new DFSRecursive();
+    Solver Solver = new DFS();
 
     protected override void OnStart(IGraphics g)
     {
